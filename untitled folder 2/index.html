@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AJAX GET Example</title>
+  <script>
+
+    function fetchData() {
+
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', 'Biodata.json', true);
+      xhr.onload = function() {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          var responseData = JSON.parse(xhr.responseText);
+          var displayDiv = document.getElementById('userData');
+          responseData.users.forEach(function(user) {
+            var userInfo = `
+              <div>
+                <h3>Name: ${user.name}</h3>
+                <p>ID:${user.ID}</p>
+                <p>University: ${user.university}</p>
+                <p>Age: ${user.age}</p>
+                <p>Phone: ${user.contact}</p>
+              </div>
+              <hr>
+            `;
+            displayDiv.innerHTML += userInfo;
+          });
+        } else {
+          console.error('Error fetching data:', xhr.status, xhr.statusText);
+        }
+      };
+      xhr.onerror = function() {
+        console.error('Request failed');
+      };
+      xhr.send();
+    }
+  </script>
+</head>
+<body>
+
+  <h1>User Data</h1>
+  <button onclick="fetchData()">Load User Data</button>
+  <div id="userData"></div>
+
+</body>
+</html>
